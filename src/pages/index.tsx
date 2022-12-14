@@ -6,7 +6,9 @@ import { isMobile } from "../utils/IsMobile";
 import AiProject from "../components/Projects/AiProject";
 import ProjectLayout from "../components/Layouts/ProjectLayout";
 
-const Home = ({ isMobile }: { isMobile: boolean }) => {
+const Home = ({ subdomain, isMobile }: { subdomain: string; isMobile: boolean }) => {
+  console.log(subdomain);
+
   return (
     <>
       <Head>
@@ -24,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
   return {
     props: {
+      subdomain: context.req.headers.host.split(".")[0],
       isMobile: isMobile(context.req),
     },
   };
