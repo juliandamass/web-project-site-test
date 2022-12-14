@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 
 import { isMobile } from "../utils/IsMobile";
@@ -7,12 +8,28 @@ import AiProject from "../components/Projects/AiProject";
 import ProjectLayout from "../components/Layouts/ProjectLayout";
 
 const Home = ({ subdomain, isMobile }: { subdomain: string; isMobile: boolean }) => {
-  console.log(subdomain);
+  const [faviconFileName, setFaviconFileName] = useState("favicon");
+
+  useEffect(() => {
+    getFaviconName();
+  }, []);
+
+  const getFaviconName = () => {
+    if (subdomain == "project-site-ai") {
+      return setFaviconFileName("favicon-ai");
+    }
+
+    if (subdomain == "project-site-zero") {
+      return setFaviconFileName("favicon-zero");
+    }
+
+    return setFaviconFileName("favicon");
+  };
 
   return (
     <>
       <Head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={`/${faviconFileName}.ico`} />
       </Head>
       <ProjectLayout isMobile={isMobile}>
         <AiProject isMobile={isMobile} />
