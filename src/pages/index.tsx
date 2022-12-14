@@ -6,6 +6,7 @@ import { isMobile } from "../utils/IsMobile";
 
 import AiProject from "../components/Projects/AiProject";
 import ProjectLayout from "../components/Layouts/ProjectLayout";
+import ZeroProject from "../components/Projects/ZeroProject";
 
 const Home = ({ subdomain, isMobile }: { subdomain: string; isMobile: boolean }) => {
   const [faviconFileName, setFaviconFileName] = useState("favicon");
@@ -26,14 +27,24 @@ const Home = ({ subdomain, isMobile }: { subdomain: string; isMobile: boolean })
     return setFaviconFileName("favicon");
   };
 
+  const getContent = () => {
+    if (subdomain == "project-site-ai") {
+      return <AiProject isMobile={isMobile} />;
+    }
+
+    if (subdomain == "project-site-zero") {
+      return <ZeroProject isMobile={isMobile} />;
+    }
+
+    return <AiProject isMobile={isMobile} />;
+  };
+
   return (
     <>
       <Head>
         <link rel="icon" href={`/${faviconFileName}.ico`} />
       </Head>
-      <ProjectLayout isMobile={isMobile}>
-        <AiProject isMobile={isMobile} />
-      </ProjectLayout>
+      <ProjectLayout isMobile={isMobile}>{getContent()}</ProjectLayout>
     </>
   );
 };
