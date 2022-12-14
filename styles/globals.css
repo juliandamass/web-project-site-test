@@ -1,0 +1,54 @@
+/* tailwind */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* end tailwind */
+
+/* unicons */
+
+@import "../node_modules/@iconscout/unicons/css/line.css";
+
+/* end unicons */
+
+/* swiper */
+
+.swiper-button-prev {
+  @apply filter grayscale;
+}
+
+.swiper-button-next {
+  @apply filter grayscale;
+}
+
+@screen lg {
+  .swiper-button-prev {
+    @apply opacity-0;
+  }
+
+  .swiper-button-next {
+    @apply opacity-0;
+  }
+}
+
+/* end swiper */
+
+/* main */
+
+.credit-scene {
+  position: absolute;
+  top: 100%;
+  animation: 20s credits linear infinite;
+}
+
+@keyframes credits {
+  0% {
+    top: 100%;
+  }
+  100% {
+    top: -62%;
+  }
+}
+
+/* end main */

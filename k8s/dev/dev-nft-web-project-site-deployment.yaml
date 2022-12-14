@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: null
+  generation: 1
+  labels:
+    run: nft-web-project-site-deployment
+  name: nft-web-project-site-deployment
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/nft-web-project-site-deployment
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      run: nft-web-project-site-deployment
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: nft-web-project-site-deployment
+    spec:
+      containers:
+        #Refers to Container Registry. Structure: hostName/repository-name/container-name
+        - image: asia.gcr.io/bjak-nft/nft-web-project-site
+          imagePullPolicy: Always
+          name: nft-web-project-site
+          ports:
+            - containerPort: 3010
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3010
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+          envFrom:
+            - secretRef:
+                name: project-site-credentials
+          env:
+            - name: ENV
+              value: "development"
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nft-web-project-site-service
+  labels:
+    run: nft-web-project-site-deployment
+spec:
+  ports:
+    - name: nft-web-project-site-port
+      port: 80
+      protocol: TCP
+      targetPort: 3010
+  selector:
+    run: nft-web-project-site-deployment

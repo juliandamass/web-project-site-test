@@ -1,0 +1,15 @@
+version: "3"
+services:
+  nft-web-project-site:
+    image: nft-web-project-site
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.production
+      args:
+        port: ${PORT}
+    platform: linux/amd64
+    env_file:
+      - ../.env
+    restart: always
+    ports:
+      - "${PORT}:${PORT}"
